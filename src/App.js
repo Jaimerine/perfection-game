@@ -1,25 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import './styles/App.scss'; 
+import Game from './Game'
+import Instructions from './Instructions'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+
+const App = () => {
+
+    //||||||||||| DOM |||||||||||
+    return (
+        <div className="page">
+            <main>
+                <Game />
+                <Instructions />
+            </main>
+            <footer>
+                <p>Shapes from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></p>
+                <p>Made by Jaime Robbins at <a href="www.junocollege.com">Juno College</a></p>
+            </footer>
+        </div>
+    );
+};
 
 export default App;

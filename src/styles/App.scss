@@ -1,0 +1,807 @@
+// NOTES FOR MORE
+// .drop-container >svg first child
+// - remove font size, padding, align, justify
+// height: 58px;
+
+// div.drop-container:
+// - margin:6px
+// -widthheight: 70px
+
+// .drag-els > div {
+//     height: 100px;
+//     width: 84px;
+// }
+
+// .drag-container > svg:first-child
+// w/h: 62
+// remove margin
+
+
+//fonts
+@import url('https://fonts.googleapis.com/css2?family=Walter+Turncoat&display=swap');
+@import url('https://use.typekit.net/uwd4uqm.css');
+
+//sass files
+@import './_setup.scss';
+@import './_variables.scss';
+@import './_mixins.scss';
+
+
+/* ||||||||||| BASE ||||||||||| */
+
+* {
+    perspective: 1000px;
+}
+
+html {
+    font-size: 62.5%;
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: #e5e5e5;
+}
+
+//root div
+body > div {
+    display: flex;
+    justify-content: center;
+}
+
+.wrapper {
+    max-width: 795px;
+    margin: 0 auto;
+}
+
+.page {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    align-items: center;
+}
+
+main {
+    width: 100%;
+}
+
+h1 {
+    font-weight: 900;
+    color: gold;
+    font-family: dazzle-unicase, sans-serif;
+    font-weight: 500;
+    transform: scaleY(1.3); //increase height
+    margin: 0px;
+    text-shadow: 2px 1.5px 0px #00008082;
+    font-size: 4.2rem;
+    margin: 18px 0;
+
+    //adjust margin and add fluid font sizing
+    @include phone {
+        & {
+            font-size: 7vw;
+            line-height: auto;
+        }
+    }
+
+    @include small-phone {
+        & {
+            font-size: 6vw;
+            margin: 10px 0 0px;
+        }
+    }
+}
+
+h2 {
+    color: red;
+    font-size: 3.6rem;
+    font-weight: 400;
+    font-family: 'Walter Turncoat', cursive;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    margin: 5px 0 23px;
+}
+
+header {
+    text-align: right;
+    position: relative;
+    background: dodgerblue;
+    border-radius: 8px;
+    border: solid 5px gold;
+    padding: 5px 15px 2px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    box-shadow: 1px 1.5px 0px #00008082;
+}
+
+p, ul, ol, label, input, form > button {
+    font-family: 'Walter Turncoat', cursive;         
+    color: navy;
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 37px;
+}
+
+ul {
+    padding: 0;
+    list-style: none;
+}
+
+button {
+    transform: perspective(10px) translateZ(0px);
+    transition: transform 0.8s linear forwards;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    padding: 9px 13px;
+
+    //reduce button size
+    @include small-phone {
+        & {
+            padding: 6px 10px;
+        }
+    }
+}
+
+button:hover, button:focus {
+    transform: perspective(10px) translateZ(-1px);
+}
+
+
+/* ||||||||||| NAV ||||||||||| */
+
+nav {
+    ul {
+        list-style: none;
+        font-family: dazzle-unicase, sans-serif;
+        font-size: 2.1rem;
+        line-height: 38px;
+        font-weight: 400;
+        padding: 0;
+        margin: 0;
+        margin-left: 10px;
+
+        @include phone {
+            & {
+                font-size: 3.5vw;
+                line-height: unset;
+
+                > li {
+                    padding: 5px 0;
+                }
+            }
+        }
+
+        @include small-phone {
+            & {
+                font-size: 4vw;
+            }
+        }
+
+        @include xs-phone {
+            & {
+                padding: 5px 0 2px;
+            }
+        }
+    }
+        
+    a {
+        text-decoration: none;
+        color: navy;        
+    }
+}
+
+/* ||||||||||| BASE GAME ||||||||||| */
+
+.top-container {
+    display: flex;
+    padding: 20px 0 0;
+
+    //wrap tray under game
+    @include tablet {
+        & {
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+    }
+
+    @include phone {
+        & {
+            padding: 5%;
+        }
+    }
+}
+
+.game {
+    max-width: 518px;
+}
+
+.outer-game {
+    background-color: red;
+    padding: 25px 25px 1px;
+    border-radius: 2%;
+    box-shadow: 0px 2px 0px 0px #ff3636, 0px 2px 5px 0px #e00000, 0px 11px 6px 8px #d00, 0px 12px 0px 14px #aa0101, 0px 12px 0px 14px #7f0000, 11px 16px 30px 10px #1c1b1bbf;
+
+    @include phone {
+        & {
+            padding: 4.5vw 3vw 1px;
+        }
+    }
+}
+
+//start button and instructions container
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px 0 10px;
+    position: relative;
+    width: 60%;
+    align-self: flex-end;
+
+    @include small-phone {
+        & {
+            margin: 10px 0 5px;
+            flex-direction: column-reverse;
+            align-items: flex-start;
+        }
+    }
+
+    @include xs-phone {
+        & {
+            margin: 5px 0 0px;
+        }
+    }
+
+    li:nth-child(2) {
+        margin-top: 3px;
+    }
+
+    .arrow {
+        width: 50px;
+        position: absolute;
+        top: 60px;
+        left: 24px;
+        fill: gold;
+        z-index: 20;
+        filter: drop-shadow(2px 2px 0px #00008082);
+        animation: bounce 2s ease infinite;
+        transform: translateZ(10px);
+    }
+
+    button {
+        margin: 9px 2px 20px 11px;
+        background-color: red;
+        color: gold;
+        font-family: dazzle-unicase, sans-serif;
+        font-size: 1.5rem;
+        font-weight: 400;
+        letter-spacing: 1px;
+        box-shadow: 3px 3px 0px 1px darkred;
+    }
+
+    @include phone {
+        button {
+            margin: 0px 2px 5px 0px;
+            font-size: 3.2vw;
+        }
+
+        .arrow {
+            left: 11px;
+        }
+    }
+
+    @include small-phone {
+        & {  
+            justify-content: flex-end;
+            flex-wrap: wrap-reverse;
+        }
+        
+        button {
+            font-size: 3.2vw;
+            box-shadow: 2px 2px 0px 1px darkred;
+            margin: 4px 0px 8px 0px;
+        }
+
+        .arrow {
+            rotate: 90deg;
+            width: 32px;
+            top: unset;
+            bottom: 8px;
+            right: 74px;
+            left: unset;
+        }
+
+        li:nth-child(2) {
+            margin-top: 0px;
+        }
+    }
+
+    @include xs-phone {
+        .arrow {
+            width: 30px;
+        }
+    }
+}
+
+@keyframes bounce {
+	0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+	40% {transform: translateY(-15px);}
+	60% {transform: translateY(-15px);}
+}
+
+//timer container
+div.timer {
+    position: relative;
+    width: 165px;
+    top: 8px;
+    left: -5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: flex-start;
+
+    @include phone {
+        width: 38%;
+        top: 2px;
+    }
+
+    @include small-phone {
+        width: 48%;
+        top: 38px;
+        left: -1px;
+    }
+
+    @include xs-phone {
+        width: 54%;
+        top: 36px;
+        left: -8px;
+    }
+
+    //outer timer image
+    img:nth-child(1) {
+        position:absolute;
+        width: 110%;
+    }
+
+    //inner timer image
+    img:nth-child(2) {
+        position: absolute;
+        width: 80%;
+    }
+
+    //timer animation (class added at game start)
+    .start {
+        animation: ticking 20s linear forwards;
+        transform-origin: 46.5% 50%;
+        transform-box: border-box;
+    }
+}
+
+@keyframes ticking {
+    from {transform: rotate(0deg);}
+    to {transform: rotate(360deg);}
+}
+
+
+/* ||||||||||| GAME DROP ZONE ||||||||||| */
+
+//overall drop container
+.drop-elements {
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    background-color: dodgerblue;
+    box-shadow:inset rgba(12, 61, 126, 0.5) 4px 3px 1px, -1px -7px 3px #1567ac, -3px -6px 3px navy, 0px 0px 4px .1px #1567ac, 0px 0px 1px #1567;
+    padding: 10px;
+    margin: 30px auto 20px;
+    width: 460px;
+    height: 340px;
+
+    @include phone {
+    & {
+        padding: 1.5%;
+        width: 80vw;
+        height: 62vw;
+        margin: 20px auto 10px;
+    }
+}
+
+    > div {
+        width: calc(100% / 4);
+        height: calc(100% / 3);
+    }
+}
+
+//individual drop containers
+.drop-container {
+    background-color: dodgerblue;
+    width: 88%;
+    height: 88%;
+    margin: 7px;
+    padding: 5px 0 0 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset rgba(12, 61, 126, 0.5) 4px 3px 1px, -1px -7px 3px #1567ac, -3px -6px 3px navy, 0px 0px 4px .1px #1567ac, 0px 0px 1px #1567;
+
+    @include phone {
+        & {
+            margin: 5px;
+        }
+    }
+    //drop container shapes
+    > svg:first-child {
+        fill: dodgerblue;
+        filter: drop-shadow(rgba(12, 61, 126, 0.5) 2px 3px 0px) drop-shadow(-2px -5px 1.5px #1567ac) drop-shadow(-3.6px -3px 1px navy);
+        position: absolute;
+
+        @include small-phone {
+            filter: drop-shadow(rgba(12, 61, 126, 0.5) 2px 3px 0px) drop-shadow(-2px -3px 1.5px #1567ac) drop-shadow(-3px -2px 1px navy);
+        }
+    }
+
+    //drop container shapes when piece dropped
+    &.dropped > svg:first-child {
+        filter: drop-shadow(3px 6px 2px navy);
+        fill: gold;
+    }
+
+}
+
+/* ||||||||||| GAME PIECES ||||||||||| */
+
+//tray pieces are on
+.drag-tray {
+    margin: 6px 0 0 45px;
+    background-color: red;
+    display: flex;
+    justify-content: space-around;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 0px 8px rgba(247, 22, 22, 0.78), inset 5px 5px 10px 20px rgba(159, 5, 5, 0.49);
+    width: 230px;
+    height: 617px;
+
+    //modify tray when wrapped under game
+    @include tablet {
+        & {
+            margin: 45px 0 0;
+            width: 520px;
+            height: 350px;
+            padding: 15px 20px 25px;
+        }
+    }
+
+    @include phone {
+        height: 315px;
+        padding: 10px 12px 12px;
+    }
+
+    @include small-phone {
+        height: 280px;
+    }
+
+    @include xs-phone {
+        height: 250px;
+    }
+}
+
+//overall piece container
+.drag-elements {
+    display:flex;
+    flex-wrap: wrap;
+    width: calc((100px + 5px) * 2);
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+
+    //individual piece containers
+    > div {
+        height: calc(100% / 6);
+        width: calc(100% / 2);
+
+        @include tablet {
+            height: calc((100% / 3) - 16px);
+            width: calc((100% / 4) - 16px);
+            margin: 8px;
+        }
+
+        @include phone {
+            & {
+                height: calc((100% / 3) - 12px);
+                width: calc((100% / 4) - 12px);
+                margin: 6px;
+            }
+        }
+
+        @include small-phone {
+            & {
+                height: calc((100% / 3));
+                width: calc((100% / 4));
+                margin: 0;
+            }
+        }
+    }
+}
+
+//drag shapes
+.drag-container {
+    width: 100%;
+    height: 100%;
+
+    //shape image
+    > svg:first-child {
+        filter: drop-shadow(3px 3px 0px goldenrod) drop-shadow(2px 2px 0px goldenrod) drop-shadow(3px 3px 0px goldenrod);
+        fill: gold;
+        margin: 10px;
+        z-index: 10;
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        animation: wiggle 1s ease infinite;
+        transform-origin: 50% 50%;
+
+        @include small-phone {
+            & {
+                filter: drop-shadow(2px 2px 0px goldenrod) drop-shadow(1px 1px 0px goldenrod) drop-shadow(2px 2px 0px goldenrod)
+            }
+        }
+    }
+
+    //drag handle
+    .handle {
+        position: absolute;
+        z-index: 20;
+        top: 33%;
+        left: 34%;
+        width: 25%;
+        fill: gold;
+        box-shadow: 1px 1px 3px goldenrod, 5px 5px 0px goldenrod;
+        border-radius: 50%;
+
+        @include tablet {
+            & {
+                top: 38%;
+            }
+        }
+
+        @include phone {
+            & {
+                top: 37%;
+                left: 35%;
+                box-shadow: 1px 1px 3px goldenrod, 4px 4px 0px goldenrod;
+            }
+        }
+
+        @include small-phone {
+            & {
+                top: 34%;
+            }
+        }
+    }
+}
+
+//drag shape animation at rest
+@keyframes wiggle {
+    0% { transform: scale(0.95, 1.05) rotate(-2deg) skewX(1); }
+    25% { transform: scale(1.05, 1) rotate (0deg); }
+    50% { transform: scale(1, 0.95) rotate (5deg); }
+    75% { transform: scale(0.95, 1) rotate(0deg); }
+    100% { transform: scale(1, 0.95) rotate(-2deg) skewX(-1); }
+}
+
+//piece when dropped
+.dropped {
+    .drag-container {
+        
+        margin-left: -5px;
+        margin-top: -5px;
+        > svg:first-child  {
+            filter: drop-shadow(0px 0px 1px gold) drop-shadow(1px 1px 0px goldenrod) drop-shadow(1px 1px 0px goldenrod) drop-shadow(2px 2px 2px navy);
+            position: unset;
+            animation: unset;
+        }
+
+        .handle  {
+            top: 29%;
+            left: 37%;
+        }
+    }
+}
+
+
+/* ||||||||||| LEADERBOARD + INSTRUCTIONS SECTIONS  ||||||||||| */
+
+/* leading dots modified from: https://www.w3.org/Style/Examples/007/leaders.en.html */
+ul.leaders {
+    span {
+        font-size: 24px;
+        line-height: 24px;
+    }
+    
+    li:before {
+        float: left;
+        width: 0;
+        white-space: nowrap;
+        color: navy;
+        font-size: 30px;
+        margin-top: -8px;
+        content:
+        "........................................"
+        "........................................"
+        "........................................"
+        "........................................"
+        "........................................";
+    }
+
+    span:first-child {
+        padding-right: 0.33rem;
+        background: white;
+    }
+
+    span + span {
+        float: right;
+        padding-left: 0.33rem;
+        background: white;
+        margin-top: 8px;
+    }
+}
+
+/* paper effect modified from: https://codepen.io/amwill/pen/YyexrJ */
+.paper {
+    min-height: 200px;
+    background: white;
+    box-shadow: 0px 0px 5px 0px #888;
+    margin: 75px auto 20px;
+
+    ol li:not(li:last-of-type) {
+        padding-bottom: 36px;
+    }
+
+    @include tablet {
+        & {
+            width: 90vw;
+        }
+    }
+}
+
+.paper::before {
+    content: '';
+    position: absolute;
+    left: 45px;
+    height: calc(100% + 20px);
+    width: 2px;
+    background: rgba(255,0,0,0.4);
+    z-index: 10;
+}
+
+.lines {
+    margin-top: 55px;
+    height: 100%;
+    width: 100%;
+    background-image: repeating-linear-gradient(white 0px, white 35px, dodgerblue 37px);
+    position: absolute;
+    top: 0;
+}
+
+.text {
+    position: relative;
+    top: 17px;
+    left: 55px;
+    bottom: 10px;
+    right: 10px;
+    line-height: 25px;
+    overflow: hidden;
+    outline: none;
+    z-index: 20;
+    padding: 20px 0 0;
+    width: 88%;
+
+    @include tablet {
+        & {
+            width: 83%
+        }
+    }
+}
+
+/* /||||||||||| MODAL ||||||||||| */
+
+//background
+.modal {
+    position: fixed;
+    z-index: 30;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 128,.50)
+}
+
+//content
+.modal-content {
+    background-color: dodgerblue;
+    color: navy;
+    margin: 10% auto;
+    padding: 55px;
+    border: 4px solid gold;
+    border-radius: 10px;
+    width: 50%;
+    position: relative;
+}
+
+//close button
+.modal-close {
+    color: navy;
+    font-size: 60px;
+    position: absolute;
+    top: 0;
+    right: 16px;
+    transform: perspective(10px) translateZ(0px);
+    transition: color 0.3s ease, transform 0.3s linear;
+    white-space: nowrap;
+    border-radius: unset;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    font-family: unset;
+    box-shadow: unset;
+    margin: 0;
+    padding: 0;
+    z-index: 40;
+}
+
+.modal-close:hover, .modal-close:focus {
+    color: gold;
+    text-decoration: none;
+    transform: perspective(10px) translateZ(2px);
+} 
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10px;
+
+    input {
+        width: 92%;
+        margin-bottom: 30px;
+        margin-top: 10px;
+        border: gold 4px solid;
+        border-radius: 5px;
+        padding: 5px;
+    }
+
+    button {
+        width: 98%;
+        background-color: gold;
+        box-shadow: 3px 3px 0px 1px goldenrod;
+        font-size: 25px;
+        margin: 0 0 20px;
+    }
+
+    label {
+        align-self: flex-start;
+    }
+}
+
+
+
+/* /||||||||||| FOOTER ||||||||||| */
+
+footer {
+    margin-top: 60px;
+    text-align: center;
+    border-top: navy 4px solid;
+    width: 100%;
+    padding: 20px 0 20px;
+
+    p {
+        margin: 0;
+    }
+
+    a {
+        color: red;
+    }
+}
