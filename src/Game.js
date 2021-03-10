@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-// import { CSSTransition } from "react-transition-group"; //animations
-import { useSpring, animated } from 'react-spring' //animations
+// import { useSpring, animated } from 'react-spring' //animations
 import ShapeComponent from './ShapeComponent' //shape svgs
 import outerTimerImg from './outer-timer.svg'; //timer image
 import innerTimerImg from './inner-timer.svg'; //timer image
@@ -29,7 +28,7 @@ export default function Game() {
     const timeout = 2000;
     const winningCount = 13;
 
-    const animateProps = useSpring({ transform: 'translateZ(1000px)', from: { transform: 'translateZ(0px)' } });
+    // const animateProps = useSpring({ transform: 'translateZ(1000px)', from: { transform: 'translateZ(0px)' } });
 
 
     const [placeholderShapesArray, setPlaceholderShapesArray] = useState(JSON.parse(JSON.stringify(placeholderShapesArrayStart)));
