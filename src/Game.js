@@ -25,7 +25,7 @@ export default function Game() {
     let draggingItem = {}; //stores shape being dragged
     let dragOverItem = {}; //stores placeholder shape dragged over
     const timeout = 20; //seconds to sort shapes
-    const winningCount = 3; //number of shapes to place
+    const winningCount = 12; //number of shapes to place
 
     //shuffled deep copies of original shape arrays
     const [placeholderShapesArray, setPlaceholderShapesArray] = useState(shuffleArray(JSON.parse(JSON.stringify(placeholderShapesArrayStart))));
