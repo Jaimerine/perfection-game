@@ -199,7 +199,7 @@ export default function Game() {
                                             ? <div className="drop-container dropped" 
                                                 onDragOver={ (event) => handleDragOver(event, item) }
                                                 onDrop={ () => handleDrop(item) } 
-                                                aria-label={item.shape + " placeholder to move piece to"}>
+                                                aria-label={item.shape + " placeholder with piece added"}>
 
                                                     <div className="dropped" >
                                                         {/* "fly class with animation dded on game over" */}
