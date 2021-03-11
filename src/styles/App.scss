@@ -220,16 +220,27 @@ nav {
         margin-top: 3px;
     }
 
-    .arrow {
+    .arrow, .arrow-mobile {
         width: 50px;
         position: absolute;
-        top: 65px;
-        left: 24px;
         fill: $yellow-light;
         z-index: 20;
-        filter: drop-shadow(2px 2px 0px $blue-text-shadow);
-        animation: bounce 2s ease infinite;
         transform: translateZ(10px);
+        filter: drop-shadow(2px 2px 0px $blue-text-shadow);
+    }
+
+    .arrow {
+        top: 65px;
+        left: 24px;
+        animation: bounce 2s ease infinite;
+    }
+
+    .arrow-mobile {
+        display: none;
+        width: 32px;
+        bottom: 9px;
+        right: 70px;
+        animation: bounce-mobile 2s ease infinite;
     }
 
     button {
@@ -242,7 +253,7 @@ nav {
         box-shadow: 3px 3px 0px 1px $red-dark;
     }
 
-    //MQs: change alignment of nav links + start button
+    //MQs: change alignment of nav links, start button + arrow
     @include phone {
         & button {
             margin: 0px 2px 5px 0px;
@@ -269,13 +280,11 @@ nav {
         }
 
         & .arrow {
-            rotate: 90deg; //firefox
-            transform: rotate(90deg);
-            width: 32px;
-            top: unset;
-            bottom: 8px;
-            left: unset;
-            right: 74px;
+            display: none;
+        }
+
+        & .arrow-mobile {
+            display: unset;
         }
 
         & li:nth-child(2) {
@@ -288,17 +297,23 @@ nav {
             margin: 5px 0 0px;
         }
         
-        & .arrow {
+        & .arrow-mobile {
             width: 30px;
         }
     }
 }
 
-//animation for arrow
+//animations for arrow
 @keyframes bounce {
 	0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
 	40% {transform: translateY(-15px);}
 	60% {transform: translateY(-15px);}
+}
+
+@keyframes bounce-mobile {
+	0%, 20%, 50%, 80%, 100% {transform: translateX(0);}
+	40% {transform: translateX(-15px);}
+	60% {transform: translateX(-15px);}
 }
 
 //timer container

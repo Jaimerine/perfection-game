@@ -175,7 +175,8 @@ export default function Game() {
                             { //hide start arrow when playing
                                 startTime
                                     ? null
-                                    : <ShapeComponent name="Arrow" />
+                                    : <><ShapeComponent name="Arrow" /><ShapeComponent name="ArrowMobile" /></>
+
                             }
                             <nav>
                                 <ul>
