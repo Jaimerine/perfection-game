@@ -198,7 +198,8 @@ export default function Game() {
                                         item.shapeDropped
                                             ? <div className="drop-container dropped" 
                                                 onDragOver={ (event) => handleDragOver(event, item) }
-                                                onDrop={ () => handleDrop(item) } >
+                                                onDrop={ () => handleDrop(item) } 
+                                                aria-label={item.shape + " placeholder to move piece to"}>
 
                                                     <div className="dropped" >
                                                         {/* "fly class with animation dded on game over" */}
@@ -212,7 +213,8 @@ export default function Game() {
 
                                             : <div className="drop-container" 
                                                 onDragOver={ (event) => handleDragOver(event, item) } 
-                                                onDrop={ () => handleDrop(item) } >
+                                                onDrop={ () => handleDrop(item) } 
+                                                aria-label={item.shape + " placeholder to move piece to"} >
 
                                                 <ShapeComponent name={ item.shape } className="drop" />
 

@@ -3,7 +3,7 @@ import Game from './Game'
 import Instructions from './Instructions'
 
 
-const App = () => {
+export default function App() {
 
     //||||||||||| DOM |||||||||||
     return (
@@ -19,5 +19,3 @@ const App = () => {
         </div>
     );
 };
-
-export default App;
