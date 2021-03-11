@@ -26,7 +26,7 @@ export const placeholderShapesArrayStart = [
     },
     {
         id: 6,
-        shape: "Square",
+        shape: "Circle",
         shapeDropped: false
     },
     {
@@ -89,7 +89,7 @@ export const draggableShapesArrayStart = [
     },
     {
         id: 6,
-        shape: "Square",
+        shape: "Circle",
         shapeMoved: false
     },
     {

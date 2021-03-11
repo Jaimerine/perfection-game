@@ -10,9 +10,9 @@ export function Arrow() {
     )
 }
 
-export function Triangle(props) {
+export function Triangle() {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" style={props.styleApplied} aria-hidden="true" fill="current" width="78%" viewBox="0 0 512 512"><path d="M507.521 427.394L282.655 52.617c-12.074-20.122-41.237-20.122-53.311 0L4.479 427.394c-12.433 20.72 2.493 47.08 26.655 47.08h449.732c24.163 0 39.089-26.36 26.655-47.08z" /></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="current" width="78%" viewBox="0 0 512 512"><path d="M507.521 427.394L282.655 52.617c-12.074-20.122-41.237-20.122-53.311 0L4.479 427.394c-12.433 20.72 2.493 47.08 26.655 47.08h449.732c24.163 0 39.089-26.36 26.655-47.08z" /></svg>
     )
 }
 
@@ -37,6 +37,12 @@ export function Heart() {
 export function Square() {
     return (
         <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="current" width="70%" viewBox="0 0 438.536 438.536"><path d="M414.41 24.123C398.333 8.042 378.963 0 356.315 0H82.228C59.58 0 40.21 8.042 24.126 24.123 8.045 40.207.003 59.576.003 82.225v274.084c0 22.647 8.042 42.018 24.123 58.102 16.084 16.084 35.454 24.126 58.102 24.126h274.084c22.648 0 42.018-8.042 58.095-24.126 16.084-16.084 24.126-35.454 24.126-58.102V82.225c-.001-22.649-8.043-42.021-24.123-58.102z" /></svg>
+    )
+}
+
+export function Circle() {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="current" width="72%" viewBox="0 0 512 512"><path d="M256 0C115.39 0 0 115.39 0 256s115.39 256 256 256 256-115.39 256-256S396.61 0 256 0z" /></svg>
     )
 }
 

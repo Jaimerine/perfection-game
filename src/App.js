@@ -13,8 +13,8 @@ const App = () => {
                 <Instructions />
             </main>
             <footer>
-                <p>Shapes from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></p>
-                <p>Made by Jaime Robbins at <a href="www.junocollege.com">Juno College</a></p>
+                <p>Shapes from <span><a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></span></p>
+                <p>Made by Jaime Robbins at <span><a href="www.junocollege.com">Juno College</a></span></p>
             </footer>
         </div>
     );

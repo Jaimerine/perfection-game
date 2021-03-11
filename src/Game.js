@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
-// import { useSpring, animated } from 'react-spring' //animations
 import ShapeComponent from './ShapeComponent' //shape svgs
-import outerTimerImg from './outer-timer.svg'; //timer image
-import innerTimerImg from './inner-timer.svg'; //timer image
+import outerTimerImg from './assets/outer-timer.svg'; //timer image
+import innerTimerImg from './assets/inner-timer.svg'; //timer image
 import LeaderBoard from './LeaderBoard' //modal component (sets to db)
 import { placeholderShapesArrayStart, draggableShapesArrayStart } from './shapeArrays' //shape arrays
 
@@ -23,32 +22,26 @@ export default function Game() {
 
 //||||||||||| GLOBAL VARS + STATE |||||||||||
 
-    let draggingItem = {};
-    let dragOverItem = {};
-    const timeout = 2000;
-    const winningCount = 13;
+    let draggingItem = {}; //stores shape being dragged
+    let dragOverItem = {}; //stores placeholder shape dragged over
+    const timeout = 20; //seconds to sort shapes
+    const winningCount = 3; //number of shapes to place
 
-    // const animateProps = useSpring({ transform: 'translateZ(1000px)', from: { transform: 'translateZ(0px)' } });
-
-
-    const [placeholderShapesArray, setPlaceholderShapesArray] = useState(JSON.parse(JSON.stringify(placeholderShapesArrayStart)));
-    const [draggableShapesArray, setDraggableShapesArray] = useState(JSON.parse(JSON.stringify(draggableShapesArrayStart)));
+    //shuffled deep copies of original shape arrays
+    const [placeholderShapesArray, setPlaceholderShapesArray] = useState(shuffleArray(JSON.parse(JSON.stringify(placeholderShapesArrayStart))));
+    const [draggableShapesArray, setDraggableShapesArray] = useState(shuffleArray(JSON.parse(JSON.stringify(draggableShapesArrayStart))));
+    
     const [gameStatus, setGameStatus] = useState(null); //on, off, playing
-    const [isPlayMode, setIsPlayMode] = useState(false);
-    const [isGameOver, setIsGameOver] = useState(false);
-    const [shapeCount, setShapeCount] = useState(0);
-    const [isWinner, setIsWinner] = useState(false);
-    const [startTime, setStartTime] = useState(0);
-    const [time, setTime] = useState(null);
-
-    // isGameOff == true ===> game is off
-    // isGameOff = false ===> game turned on
-    // isGameOff = null ==> playing
+    const [isGameOver, setIsGameOver] = useState(false); //whether game is over
+    const [shapeCount, setShapeCount] = useState(0); //number of shapes placed
+    const [isWinner, setIsWinner] = useState(false); //whether player is a winner
+    const [startTime, setStartTime] = useState(0); //time started
+    const [time, setTime] = useState(null); //time elapsed since started
 
 
 //||||||||||| EFFECT FUNCTIONS |||||||||||
 
-    //GAME STARTED/RESET: shuffle arrays and start timer when game started
+    //GAME STARTED/RESET: shuffle arrays and reset variables on game start, clear timer on end
     useEffect( () => {
         
         //if started, start timer
@@ -56,10 +49,11 @@ export default function Game() {
 
             //reset variables
             setGameStatus('playing');
-            setIsPlayMode('true')
             setShapeCount(0);
             setIsWinner(false);
             setTime(0);
+            setDraggableShapesArray(shuffleArray(JSON.parse(JSON.stringify(placeholderShapesArrayStart))));
+            setPlaceholderShapesArray(shuffleArray(JSON.parse(JSON.stringify(draggableShapesArrayStart))));
             
             //set start time
             const timeNow = new Date().getTime();
@@ -78,17 +72,15 @@ export default function Game() {
                 clearInterval(i);
             }
             
-            //stop timer animation
+            //stop timer animation (turn off shape drag functionality and show start arrow)
             setStartTime(0); 
-
-            //turn off shape drag functionality, show start arrow
-            setIsPlayMode(false);
         }
 
-    }, [isGameOver, gameStatus, startTime, draggableShapesArray, placeholderShapesArray])
+    }, [gameStatus])
 
-    //GAME OVER: show modal and trigger reset
+    //GAME OVER: trigger reset useeffect on game over
     useEffect(() => {
+        
         if (isGameOver) {
 
             //triger reset useEffect
@@ -97,33 +89,10 @@ export default function Game() {
             //set original arrays to move pieces back to tray
             setDraggableShapesArray(shuffleArray(JSON.parse(JSON.stringify(placeholderShapesArrayStart))));
             setPlaceholderShapesArray(shuffleArray(JSON.parse(JSON.stringify(draggableShapesArrayStart))));
+            
         }
-    }, [isGameOver, gameStatus])
 
-    //TIMER: begin timer when game started
-    // useEffect(() => {
-        
-    //     let interval;
-    //     if (gameStatus) {
-    //         interval = setInterval(() => {
-    //             setTimer(timer => timer + 1);
-    //         }, 1000);
-    //     } else if (!gameStatus && timer !== 0) {
-    //         clearInterval(interval);
-    //     }
-
-    //     if (gameStatus && timer === timeout) {
-    //         //show modal with result
-    //         setIsWinner(false)
-    //         setIsGameOver(true);
-    //         setGameStatus(false);
-    //     }
-
-    //     return () => {
-    //         clearInterval(interval);
-    //     }
-
-    // }, [gameStatus, timer]);
+    }, [isGameOver])
 
 
 //||||||||||| DRAG + DROP HANDLERS |||||||||||
@@ -169,16 +138,17 @@ export default function Game() {
 
             //increment shape count + check if won
             const count = shapeCount + 1;
-            setShapeCount(count)
-
-            console.log("shapeCnt:", shapeCount, " count:", count)
+            setShapeCount(count);
 
             if (count === winningCount) {
                 //calculate time difference since start
                 const timeDifference = Math.round(Math.abs((new Date().getTime() - startTime) / 1000));
-                setTime(timeDifference)
-
-                setIsWinner(true);
+                
+                //values below passed to leaderboard/modal component to dicate message
+                setTime(timeDifference) 
+                setIsWinner(true); 
+                
+                //trigger modal to be shown
                 setIsGameOver(true);
             }
         }
@@ -196,13 +166,14 @@ export default function Game() {
                     <header>
                         <h1>PERFECTION</h1>
                         <div className="timer">
-                            <img src={outerTimerImg} alt="outside of timer with painted ticks for each second" />
-                            <img src={innerTimerImg} className={startTime ? "start" : null} alt="inside of timer with ticking animation on game start" />
+                            {/* add start animation on timer on game start */}
+                            <img src={ outerTimerImg } alt="outside of timer with painted ticks for each second" />
+                            <img src={ innerTimerImg } className={ startTime ? "start" : null } alt="inside of timer with ticking animation on game start" />
                         </div>
-                        <div className="flex-container">
-                            <button onClick={() => setGameStatus('on')}>Start</button>
-                            { 
-                                isPlayMode 
+                        <div className="nav-container">
+                            <button onClick={ () => setGameStatus('on') }>Start</button>
+                            { //hide start arrow when playing
+                                startTime
                                     ? null
                                     : <ShapeComponent name="Arrow" />
                             }
@@ -215,32 +186,35 @@ export default function Game() {
                         </div>
                     </header>
                     
-                        
-
+                    {/* placeholder shapes */}
                     <div className="drop-elements">
                         {
                             //loop through placeholder shapes array, render on page
                             placeholderShapesArray.map((item) => (
-                                <div key={"drop_" + item.id}>
+                                <div key={ "drop_" + item.id }>
                                     {
                                         //add dropped shape, if dropped
                                         item.shapeDropped
-                                            ?  <div className="drop-container dropped" onDragOver={(event) => handleDragOver(event, item)} onDrop={() => handleDrop(item)} >
-                                                    
-                                                    {/* <ShapeComponent name={item.shape} className="drop dropped" /> */}
+                                            ? <div className="drop-container dropped" 
+                                                onDragOver={ (event) => handleDragOver(event, item) }
+                                                onDrop={ () => handleDrop(item) } >
 
-                                                    {/* <animated.div style={animateProps}> */}
-                                                        <div className="dropped" >
-                                                            <div className="drag-container">
-                                                                    <ShapeComponent name={item.shape} className="drag dropped" />
-                                                                    <ShapeComponent name="Handle" />
-                                                            </div>
+                                                    <div className="dropped" >
+                                                        {/* "fly class with animation dded on game over" */}
+                                                        <div className={ isGameOver ? "drag-container fly" : "drag-container" }>
+                                                                <ShapeComponent name={ item.shape } className="drag dropped" />
+                                                                <ShapeComponent name="Handle" />
                                                         </div>
-                                                    {/* </animated.div> */}
+                                                    </div>
+                                                
                                                 </div>
 
-                                            : <div className="drop-container" onDragOver={(event) => handleDragOver(event, item)} onDrop={() => handleDrop(item)} >
-                                                <ShapeComponent name={item.shape} className="drop" />
+                                            : <div className="drop-container" 
+                                                onDragOver={ (event) => handleDragOver(event, item) } 
+                                                onDrop={ () => handleDrop(item) } >
+
+                                                <ShapeComponent name={ item.shape } className="drop" />
+
                                             </div>
                                     }
                                 </div>
@@ -250,6 +224,7 @@ export default function Game() {
                 </div>
             </div>
 
+            {/* draggable shapes */}
             <div className="drag-tray">
                 <div className="drag-elements">
                     {
@@ -257,29 +232,35 @@ export default function Game() {
                         draggableShapesArray.map((item) => (
 
                             //add shape, if not yet moved, else leave empty div to avoid shapes moving
-                            //**************************styleApplied={{ rotate: '0deg' }}
                             !item.shapeMoved
 
-                                ? <div key={"drag_" + item.id}>
-                                    <div className="drag-container" draggable={isPlayMode ? true : false} onDragStart={() => handleDragStart(item)} key={"drag_" + item.id} aria-label={item.shape + " piece"}>
-                                        <ShapeComponent name={item.shape} styleApplied={{ transform: 'rotate(0deg)' }} />
-                                        <ShapeComponent name="Handle" /> 
+                                ? <div key={ "drag_" + item.id }>
+                                    {/* set item as draggable if game started, add fly class on game over */}
+                                    <div className={ isGameOver ? "drag-container fly" : "drag-container" } 
+                                        draggable={ startTime ? true : false } 
+                                        onDragStart={ () => handleDragStart(item) } 
+                                        key={ "drag_" + item.id } 
+                                        aria-label={ item.shape + " piece" }>
+
+                                        <ShapeComponent name={ item.shape } styleApplied={{ rotate: '0deg' }} />
+                                        <ShapeComponent name="Handle" />
+
                                     </div>
                                 </div>
-                                : <div key={"empty_" + item.id}></div>
+                                : <div key={ "empty_" + item.id }></div>
                         ))
                     }
                 </div>
             </div>
         </section>
 
+        {/* leaderboard, databse call + modal */}
+        <LeaderBoard 
+            isWinner={ isWinner } 
+            time={ time } 
+            isGameOver={ isGameOver } 
+            setIsGameOverFn={ setIsGameOver } />
 
-        {/* show modal on game over */}
-        {
-            // isGameOver
-                <LeaderBoard isWinner={isWinner} time={time} isGameOver={isGameOver} setIsGameOverFn={setIsGameOver} setGameStatusFn={setGameStatus} />
-                // : null
-        }
         </>
     );
 };

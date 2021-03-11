@@ -6,13 +6,13 @@ export default function LeaderBoard(props) {
     //database reference
     const dbRef = firebase.database().ref();
 
-    const [playersArray, setPlayersArray] = useState([]);
-    const [nameInput, setNameInput] = useState('');
+    const [playersArray, setPlayersArray] = useState([]); //winners names + times
+    const [nameInput, setNameInput] = useState(''); //name of winner entered
     
 
 //||||||||||| EFFECT FUNCTIONS |||||||||||
 
-//DB EVENT LISTENER: listen to 'value' changes on name input
+//DB EVENT LISTENER: listen to value changes on name input
     useEffect(() => {
 
         //initialize firebase event listener
@@ -36,9 +36,8 @@ export default function LeaderBoard(props) {
             setPlayersArray(playersArrayTemp);
         });
 
-        //close db
+        //close db connection on unmount
         return () => {
-            console.log('datase connection closed')
             dbRef.off();
         }
 
@@ -58,37 +57,38 @@ export default function LeaderBoard(props) {
         //if no name provided, set name as anonymous
         let name = nameInput;
         if (!name || anonymous === true) {
-            name = 'Anonymous'
+            name = 'Anonymous';
         }
         setNameInput(name);
 
         //push player data to db
-        dbRef.push({name: name, time: props.time, date: new Date()});
+        const dateNow = new Date()
+        dbRef.push({ name: name, time: props.time, date: dateNow.toString() });
 
         //reset value of input
         setNameInput('');
 
-        //unmount modal
-        props.setIsGameOverFn(false)
+        //unmount modal + trigger reset
+        props.setIsGameOverFn(false);
     }
 
     return (
         <>
-        { //show modal if applicable
+        { //show modal on game over
             props.isGameOver
                 ? <div className="modal">
                     <div className="modal-content">
-                        <button className="modal-close" aria-label="close button" onClick={() => {props.setIsGameOverFn(false)}}>&times;</button>
+                        <button className="modal-close" aria-label="close button" onClick={ () => {props.setIsGameOverFn(false)} }>&times;</button>
                         <div>
                             { //if winner, ask for name, else display message
                                 props.isWinner
                                     ?   <>
-                                        <p>Wow, great job! You finished in {props.time} seconds!</p>
+                                        <p>Wow, great job! You finished in { props.time } seconds!</p>
                                         <form action="">
                                             <label htmlFor="name">Enter your name below to be added to the leader board:</label>
-                                                <input type="text" id="name" placeholder="Molly Robbins" value={nameInput} onChange={(event) => { handleChange(event)}} />
-                                                <button onClick={(event) => {handleSubmit(event)}}>Put my name on the Books!</button>
-                                            <button onClick={(event) => {handleSubmit(event, true)}}>Nah, I don't need the world to know how awesome I am!</button>
+                                                <input type="text" id="name" placeholder="Molly" value={ nameInput } onChange={ handleChange } maxLength="15"/>
+                                                <button onClick={ handleSubmit }>Put my name on the Books!</button>
+                                            <button onClick={ (event) => {handleSubmit(event, true)} }>Nah, I don't need the world to know how awesome I am!</button>
                                         </form>
 
                                         </>
@@ -102,26 +102,26 @@ export default function LeaderBoard(props) {
         }
 
         {/* leaderboard */}
-            <section className="paper wrapper" id="leader-board">
-                <div className="text">
-                    <h2>Leader Board</h2>
-                    <ul className="leaders">
-                        { //if players exist, map throuh array and display
-                            playersArray.length > 0
-                                ? playersArray.map((player) => {
-                                    return (
-                                    
-                                        <li key={player.key}>
-                                            <span>{player.name}</span> <span>{player.time}s</span>
-                                        </li>
-                                    )
-                                })
-                                : 'No players yet!'
-                        }
-                    </ul>
-                </div>
-                <div className="lines"></div>
-            </section>
+        <section className="leaderboard paper wrapper" id="leader-board">
+            <div className="text">
+                <h2>Leader Board</h2>
+                <ul className="leaders">
+                    { //if players exist, map throuh array and display
+                        playersArray.length > 0
+                            ? playersArray.map((player) => {
+                                return (
+                                
+                                    <li key={ player.key }>
+                                        <span>{ player.name }</span> <span>{ player.time }s</span>
+                                    </li>
+                                )
+                            })
+                            : 'No players yet!'
+                    }
+                </ul>
+            </div>
+            <div className="lines"></div>
+        </section>
 
         </>
     )
